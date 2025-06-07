@@ -1,0 +1,985 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>冰淇淋配送保温实验 - 小学科学课</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Comic Sans MS', 'Marker Felt', '幼圆', sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #a1c4fd, #c2e9fb);
+            min-height: 100vh;
+            padding: 20px;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: rgba(255, 255, 255, 0.95);
+            border-radius: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            overflow: hidden;
+            padding: 30px;
+        }
+        
+        header {
+            text-align: center;
+            padding: 20px 0;
+            background: linear-gradient(to right, #ff9a9e, #fad0c4);
+            border-radius: 20px;
+            margin-bottom: 25px;
+            color: white;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        h1 {
+            font-size: 2.8rem;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            font-size: 1.4rem;
+            margin-bottom: 15px;
+        }
+        
+        .content {
+            display: flex;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+        
+        .control-panel {
+            flex: 1;
+            min-width: 350px;
+            background: #f8f9fa;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.05);
+        }
+        
+        .simulation {
+            flex: 2;
+            min-width: 500px;
+            background: #e9f7fe;
+            border-radius: 20px;
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.05);
+        }
+        
+        .control-group {
+            margin-bottom: 30px;
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+        
+        h2 {
+            color: #e74c3c;
+            margin-bottom: 15px;
+            font-size: 2rem;
+            text-align: center;
+        }
+        
+        h3 {
+            color: #3498db;
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+            text-align: center;
+        }
+        
+        .control-item {
+            margin-bottom: 25px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+            color: #2c3e50;
+            font-weight: bold;
+        }
+        
+        .slider-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        input[type="range"] {
+            flex: 1;
+            height: 30px;
+            -webkit-appearance: none;
+            background: linear-gradient(to right, #4facfe, #00f2fe);
+            border-radius: 15px;
+            outline: none;
+        }
+        
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            background: #e74c3c;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        
+        .value-display {
+            min-width: 70px;
+            text-align: center;
+            background: #3498db;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 15px;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+        
+        .materials {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 15px;
+        }
+        
+        .material-option {
+            padding: 18px 15px;
+            border-radius: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: #e0e0e0;
+            flex: 1;
+            min-width: 140px;
+            font-size: 1.1rem;
+        }
+        
+        .material-option.selected {
+            background: #3498db;
+            color: white;
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .material-option i {
+            font-size: 2.8rem;
+            margin-bottom: 10px;
+            display: block;
+        }
+        
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 20px;
+            background: linear-gradient(to right, #2ecc71, #1abc9c);
+            color: white;
+            border: none;
+            border-radius: 15px;
+            font-size: 1.4rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        }
+        
+        .btn:active {
+            transform: translateY(1px);
+        }
+        
+        #reset-btn {
+            background: linear-gradient(to right, #e74c3c, #c0392b);
+            margin-top: 20px;
+        }
+        
+        .delivery-scene {
+            width: 100%;
+            height: 220px;
+            background: linear-gradient(to bottom, #87CEEB, #E0F7FA);
+            border-radius: 15px;
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 30px;
+            border: 4px solid #3498db;
+        }
+        
+        .road {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: 50px;
+            background: #7f8c8d;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .road-line {
+            width: 100%;
+            height: 6px;
+            background: white;
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            border: 1px dashed #ccc;
+        }
+        
+        .delivery-man {
+            position: absolute;
+            left: -100px;
+            bottom: 60px;
+            transition: left 15s linear;
+        }
+        
+        .delivery-man.riding {
+            left: calc(100% + 100px);
+        }
+        
+        .scooter {
+            width: 120px;
+            height: 80px;
+            position: relative;
+        }
+        
+        .scooter-body {
+            width: 100px;
+            height: 45px;
+            background: #e74c3c;
+            border-radius: 10px 20px 5px 5px;
+            position: absolute;
+            bottom: 0;
+            left: 10px;
+        }
+        
+        .scooter-handle {
+            width: 35px;
+            height: 30px;
+            background: #7f8c8d;
+            position: absolute;
+            top: -25px;
+            left: 70px;
+            border-radius: 5px;
+        }
+        
+        .rider {
+            width: 35px;
+            height: 45px;
+            background: #3498db;
+            position: absolute;
+            top: -45px;
+            left: 40px;
+            border-radius: 10px 10px 0 0;
+        }
+        
+        .rider-head {
+            width: 25px;
+            height: 25px;
+            background: #ffdbac;
+            border-radius: 50%;
+            position: absolute;
+            top: -25px;
+            left: 5px;
+        }
+        
+        .box {
+            width: 60px;
+            height: 50px;
+            background: #f1c40f;
+            position: absolute;
+            bottom: 50px;
+            left: 30px;
+            border-radius: 5px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 2rem;
+        }
+        
+        .result-container {
+            width: 100%;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+        
+        .chart-container {
+            flex: 2;
+            min-width: 350px;
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            height: 300px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+        
+        .icecream-status {
+            flex: 1;
+            min-width: 250px;
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+        
+        .icecream-image {
+            width: 150px;
+            height: 150px;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            margin-bottom: 20px;
+            transition: all 0.5s;
+        }
+        
+        .status-text {
+            font-size: 1.6rem;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 15px;
+        }
+        
+        .temperature-display {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #e74c3c;
+            background: #f8f9fa;
+            padding: 15px 25px;
+            border-radius: 15px;
+            width: 100%;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        
+        .science-tip {
+            background: #e8f4f8;
+            border-radius: 15px;
+            padding: 25px;
+            margin-top: 25px;
+            border-left: 6px solid #3498db;
+        }
+        
+        .science-tip h3 {
+            color: #3498db;
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+            text-align: left;
+        }
+        
+        .science-tip p {
+            line-height: 1.7;
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+        }
+        
+        .conclusion {
+            margin-top: 20px;
+            padding: 18px;
+            background: #d5f5e3;
+            border-radius: 12px;
+            font-weight: bold;
+            color: #27ae60;
+            text-align: center;
+            font-size: 1.3rem;
+        }
+        
+        .results-table {
+            width: 100%;
+            margin-top: 25px;
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+        
+        .results-table h3 {
+            margin-bottom: 20px;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        th, td {
+            padding: 15px;
+            text-align: center;
+            border-bottom: 1px solid #eee;
+        }
+        
+        th {
+            background-color: #3498db;
+            color: white;
+        }
+        
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        
+        @media (max-width: 768px) {
+            .content {
+                flex-direction: column;
+            }
+            
+            .control-panel, .simulation {
+                min-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-ice-cream"></i> 冰淇淋配送保温实验</h1>
+            <div class="subtitle">探索如何减缓冰淇淋融化速度 - 理解热传递原理</div>
+        </header>
+        
+        <div class="content">
+            <div class="control-panel">
+                <h2><i class="fas fa-sliders-h"></i> 实验设置</h2>
+                
+                <div class="control-group">
+                    <div class="control-item">
+                        <label><i class="fas fa-temperature-high"></i> 外界温度: <span id="temp-value">30</span>°C</label>
+                        <div class="slider-container">
+                            <input type="range" id="temperature" min="25" max="40" value="30">
+                            <div class="value-display" id="temp-display">30°C</div>
+                        </div>
+                    </div>
+                    
+                    <div class="control-item">
+                        <label><i class="fas fa-clock"></i> 配送时间: <span id="time-value">15</span> 分钟</label>
+                        <div class="slider-container">
+                            <input type="range" id="time" min="5" max="30" value="15">
+                            <div class="value-display" id="time-display">15分钟</div>
+                        </div>
+                    </div>
+                    
+                    <div class="control-item">
+                        <label><i class="fas fa-snowflake"></i> 冰淇淋初始温度: <span id="initial-temp-value">-18</span>°C</label>
+                        <div class="slider-container">
+                            <input type="range" id="initial-temp" min="-25" max="-10" value="-18">
+                            <div class="value-display" id="initial-temp-display">-18°C</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="control-group">
+                    <h3><i class="fas fa-archive"></i> 选择保温箱</h3>
+                    <div class="materials">
+                        <div class="material-option" data-type="none" onclick="selectMaterial(this, 'box')">
+                            <i class="fas fa-times-circle"></i>
+                            <div>无保温箱</div>
+                        </div>
+                        <div class="material-option" data-type="thin" onclick="selectMaterial(this, 'box')">
+                            <i class="fas fa-box"></i>
+                            <div>薄泡沫箱</div>
+                        </div>
+                        <div class="material-option" data-type="thick" onclick="selectMaterial(this, 'box')">
+                            <i class="fas fa-box-open"></i>
+                            <div>厚泡沫箱</div>
+                        </div>
+                        <div class="material-option selected" data-type="pro" onclick="selectMaterial(this, 'box')">
+                            <i class="fas fa-shipping-fast"></i>
+                            <div>专业冷藏箱</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="control-group">
+                    <h3><i class="fas fa-snowflake"></i> 选择冷源</h3>
+                    <div class="materials">
+                        <div class="material-option" data-type="none" onclick="selectMaterial(this, 'cool')">
+                            <i class="fas fa-times-circle"></i>
+                            <div>无冷源</div>
+                        </div>
+                        <div class="material-option" data-type="ice-small" onclick="selectMaterial(this, 'cool')">
+                            <i class="fas fa-cube"></i>
+                            <div>少量冰块</div>
+                        </div>
+                        <div class="material-option" data-type="ice-large" onclick="selectMaterial(this, 'cool')">
+                            <i class="fas fa-cubes"></i>
+                            <div>大量冰块</div>
+                        </div>
+                        <div class="material-option selected" data-type="dryice" onclick="selectMaterial(this, 'cool')">
+                            <i class="fas fa-temperature-low"></i>
+                            <div>干冰包</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <button class="btn" id="start-btn">
+                    <i class="fas fa-play"></i> 开始配送
+                </button>
+                
+                <button class="btn" id="reset-btn">
+                    <i class="fas fa-redo"></i> 重置实验
+                </button>
+            </div>
+            
+            <div class="simulation">
+                <h2><i class="fas fa-truck"></i> 配送模拟</h2>
+                
+                <div class="delivery-scene">
+                    <div class="delivery-man">
+                        <div class="scooter">
+                            <div class="scooter-body"></div>
+                            <div class="scooter-handle"></div>
+                            <div class="rider">
+                                <div class="rider-head"></div>
+                            </div>
+                        </div>
+                        <div class="box">
+                            <i class="fas fa-ice-cream"></i>
+                        </div>
+                    </div>
+                    <div class="road">
+                        <div class="road-line"></div>
+                    </div>
+                </div>
+                
+                <div class="result-container">
+                    <div class="chart-container">
+                        <canvas id="temp-chart"></canvas>
+                    </div>
+                    
+                    <div class="icecream-status">
+                        <div class="icecream-image" id="icecream-image" style="background-image: url('https://img.icons8.com/color/96/000000/ice-cream-cone.png')"></div>
+                        <div class="temperature-display">-18°C</div>
+                        <div class="status-text" id="status-text">状态良好</div>
+                    </div>
+                </div>
+                
+                <div class="science-tip">
+                    <h3><i class="fas fa-lightbulb"></i> 科学原理</h3>
+                    <p>当温度不同的物体（如冰淇淋和周围空气）相互接触时，热量会从高温物体传递到低温物体，直到两者温度相同（热平衡）。</p>
+                    <p>保温箱和冷源可以减缓热传递：</p>
+                    <ul>
+                        <li><strong>泡沫箱</strong>：作为热的不良导体，减少热量进入</li>
+                        <li><strong>专业冷藏箱</strong>：多层隔热材料，效果最佳</li>
+                        <li><strong>冰块</strong>：吸收热量融化，保持低温环境</li>
+                        <li><strong>干冰</strong>：升华吸收大量热，降温效果最好</li>
+                    </ul>
+                    <div class="conclusion">结论：专业冷藏箱 + 干冰包 是最有效的保温组合！</div>
+                </div>
+                
+                <div class="results-table">
+                    <h3><i class="fas fa-clipboard-list"></i> 实验结果对比</h3>
+                    <table id="results-table">
+                        <thead>
+                            <tr>
+                                <th>保温箱</th>
+                                <th>冷源</th>
+                                <th>最终温度</th>
+                                <th>状态</th>
+                                <th>效果</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- 结果将通过JS动态添加 -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 全局变量
+        let currentBox = 'pro';
+        let currentCool = 'dryice';
+        let isSimulating = false;
+        let tempChart = null;
+        let results = [];
+        
+        // 初始化页面
+        document.addEventListener('DOMContentLoaded', function() {
+            // 设置滑块事件
+            setupSliders();
+            
+            // 设置按钮事件
+            document.getElementById('start-btn').addEventListener('click', startSimulation);
+            document.getElementById('reset-btn').addEventListener('click', resetSimulation);
+            
+            // 初始化图表
+            initChart();
+            
+            // 初始化结果表格
+            updateResultsTable();
+        });
+        
+        // 设置滑块
+        function setupSliders() {
+            // 温度滑块
+            const tempSlider = document.getElementById('temperature');
+            const tempValue = document.getElementById('temp-value');
+            const tempDisplay = document.getElementById('temp-display');
+            
+            tempSlider.addEventListener('input', function() {
+                const value = this.value;
+                tempValue.textContent = value;
+                tempDisplay.textContent = value + '°C';
+            });
+            
+            // 时间滑块
+            const timeSlider = document.getElementById('time');
+            const timeValue = document.getElementById('time-value');
+            const timeDisplay = document.getElementById('time-display');
+            
+            timeSlider.addEventListener('input', function() {
+                const value = this.value;
+                timeValue.textContent = value;
+                timeDisplay.textContent = value + '分钟';
+            });
+            
+            // 初始温度滑块
+            const initialTempSlider = document.getElementById('initial-temp');
+            const initialTempValue = document.getElementById('initial-temp-value');
+            const initialTempDisplay = document.getElementById('initial-temp-display');
+            
+            initialTempSlider.addEventListener('input', function() {
+                const value = this.value;
+                initialTempValue.textContent = value;
+                initialTempDisplay.textContent = value + '°C';
+            });
+        }
+        
+        // 选择材料
+        function selectMaterial(element, type) {
+            const container = element.parentElement;
+            const options = container.querySelectorAll('.material-option');
+            
+            // 移除所有选中状态
+            options.forEach(opt => opt.classList.remove('selected'));
+            
+            // 添加当前选中状态
+            element.classList.add('selected');
+            
+            // 更新当前选择
+            if (type === 'box') {
+                currentBox = element.dataset.type;
+            } else {
+                currentCool = element.dataset.type;
+            }
+        }
+        
+        // 初始化图表
+        function initChart() {
+            const ctx = document.getElementById('temp-chart').getContext('2d');
+            
+            tempChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: [],
+                    datasets: [{
+                        label: '冰淇淋温度 (°C)',
+                        data: [],
+                        borderColor: '#e74c3c',
+                        backgroundColor: 'rgba(231, 76, 60, 0.1)',
+                        borderWidth: 4,
+                        tension: 0.3,
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            min: -25,
+                            max: 10,
+                            title: {
+                                display: true,
+                                text: '温度 (°C)',
+                                font: {
+                                    size: 14
+                                }
+                            },
+                            ticks: {
+                                font: {
+                                    size: 12
+                                }
+                            }
+                        },
+                        x: {
+                            title: {
+                                display: true,
+                                text: '时间 (分钟)',
+                                font: {
+                                    size: 14
+                                }
+                            },
+                            ticks: {
+                                font: {
+                                    size: 12
+                                }
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        title: {
+                            display: true,
+                            text: '配送过程中冰淇淋温度变化',
+                            font: {
+                                size: 18,
+                                weight: 'bold'
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        
+        // 开始模拟
+        function startSimulation() {
+            if (isSimulating) return;
+            isSimulating = true;
+            
+            // 获取参数
+            const temperature = parseInt(document.getElementById('temperature').value);
+            const time = parseInt(document.getElementById('time').value);
+            const initialTemp = parseInt(document.getElementById('initial-temp').value);
+            
+            // 重置图表
+            tempChart.data.labels = [];
+            tempChart.data.datasets[0].data = [];
+            tempChart.update();
+            
+            // 显示配送动画
+            const deliveryMan = document.querySelector('.delivery-man');
+            deliveryMan.classList.remove('riding');
+            void deliveryMan.offsetWidth; // 触发重排
+            deliveryMan.classList.add('riding');
+            
+            // 模拟温度变化
+            simulateTemperature(temperature, time, initialTemp);
+        }
+        
+        // 模拟温度变化
+        function simulateTemperature(envTemp, duration, startTemp) {
+            let currentTemp = startTemp;
+            const timePoints = [];
+            const tempPoints = [];
+            
+            // 根据材料计算保温效果
+            let insulation = 1.0;
+            if (currentBox === 'thin') insulation = 0.6;
+            if (currentBox === 'thick') insulation = 0.3;
+            if (currentBox === 'pro') insulation = 0.1;
+            
+            // 根据冷源计算降温效果
+            let cooling = 0;
+            if (currentCool === 'ice-small') cooling = 5;
+            if (currentCool === 'ice-large') cooling = 10;
+            if (currentCool === 'dryice') cooling = 20;
+            
+            // 有效环境温度（考虑冷源）
+            const effectiveEnvTemp = envTemp - cooling;
+            
+            // 时间间隔（0.1分钟）
+            const interval = 0.1;
+            let elapsed = 0;
+            
+            const intervalId = setInterval(() => {
+                if (elapsed >= duration) {
+                    clearInterval(intervalId);
+                    isSimulating = false;
+                    
+                    // 保存结果
+                    saveResult(currentTemp);
+                    return;
+                }
+                
+                // 计算温度变化（简化模型）
+                // 温度变化速率取决于温差和保温效果
+                const tempChange = (effectiveEnvTemp - currentTemp) * 0.05 * insulation;
+                currentTemp += tempChange;
+                
+                // 记录数据点（每0.5分钟记录一次）
+                if (elapsed % 0.5 < 0.1) {
+                    timePoints.push(elapsed.toFixed(1));
+                    tempPoints.push(parseFloat(currentTemp.toFixed(1)));
+                    
+                    // 更新图表
+                    tempChart.data.labels = timePoints;
+                    tempChart.data.datasets[0].data = tempPoints;
+                    tempChart.update();
+                    
+                    // 更新UI
+                    updateIceCreamStatus(currentTemp);
+                }
+                
+                elapsed += interval;
+            }, 50); // 50ms = 0.05秒
+        }
+        
+        // 更新冰淇淋状态
+        function updateIceCreamStatus(temp) {
+            const image = document.getElementById('icecream-image');
+            const tempDisplay = document.querySelector('.temperature-display');
+            const statusText = document.getElementById('status-text');
+            
+            tempDisplay.textContent = temp.toFixed(1) + '°C';
+            
+            if (temp < -10) {
+                image.style.backgroundImage = "url('https://img.icons8.com/color/96/000000/ice-cream-cone.png')";
+                statusText.textContent = '状态：完美保存';
+                statusText.style.color = '#27ae60';
+            } else if (temp < -5) {
+                image.style.backgroundImage = "url('https://img.icons8.com/color/96/000000/ice-cream-bowl.png')";
+                statusText.textContent = '状态：轻微软化';
+                statusText.style.color = '#f39c12';
+            } else if (temp < 0) {
+                image.style.backgroundImage = "url('https://img.icons8.com/color/96/000000/melting-ice-cream.png')";
+                statusText.textContent = '状态：部分融化';
+                statusText.style.color = '#e67e22';
+            } else {
+                image.style.backgroundImage = "url('https://img.icons8.com/color/96/000000/ice-cream-melted.png')";
+                statusText.textContent = '状态：完全融化';
+                statusText.style.color = '#e74c3c';
+            }
+        }
+        
+        // 保存结果
+        function saveResult(finalTemp) {
+            // 获取保温箱名称
+            let boxName = '';
+            switch(currentBox) {
+                case 'none': boxName = '无保温箱'; break;
+                case 'thin': boxName = '薄泡沫箱'; break;
+                case 'thick': boxName = '厚泡沫箱'; break;
+                case 'pro': boxName = '专业冷藏箱'; break;
+            }
+            
+            // 获取冷源名称
+            let coolName = '';
+            switch(currentCool) {
+                case 'none': coolName = '无冷源'; break;
+                case 'ice-small': coolName = '少量冰块'; break;
+                case 'ice-large': coolName = '大量冰块'; break;
+                case 'dryice': coolName = '干冰包'; break;
+            }
+            
+            // 获取状态
+            let status = '';
+            let rating = '';
+            if (finalTemp < -10) {
+                status = '完美保存';
+                rating = '★★★★★';
+            } else if (finalTemp < -5) {
+                status = '轻微软化';
+                rating = '★★★★';
+            } else if (finalTemp < 0) {
+                status = '部分融化';
+                rating = '★★★';
+            } else {
+                status = '完全融化';
+                rating = '★★';
+            }
+            
+            // 添加结果
+            results.push({
+                box: boxName,
+                cool: coolName,
+                temp: finalTemp.toFixed(1) + '°C',
+                status: status,
+                rating: rating
+            });
+            
+            // 更新结果表格
+            updateResultsTable();
+        }
+        
+        // 更新结果表格
+        function updateResultsTable() {
+            const tbody = document.querySelector('#results-table tbody');
+            tbody.innerHTML = '';
+            
+            results.forEach(result => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${result.box}</td>
+                    <td>${result.cool}</td>
+                    <td>${result.temp}</td>
+                    <td>${result.status}</td>
+                    <td style="color:${result.rating.length > 3 ? '#27ae60' : (result.rating.length > 2 ? '#f39c12' : '#e74c3c')}">${result.rating}</td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+        
+        // 重置模拟
+        function resetSimulation() {
+            isSimulating = false;
+            
+            // 重置滑块
+            document.getElementById('temperature').value = 30;
+            document.getElementById('time').value = 15;
+            document.getElementById('initial-temp').value = -18;
+            document.getElementById('temp-value').textContent = '30';
+            document.getElementById('time-value').textContent = '15';
+            document.getElementById('initial-temp-value').textContent = '-18';
+            document.getElementById('temp-display').textContent = '30°C';
+            document.getElementById('time-display').textContent = '15分钟';
+            document.getElementById('initial-temp-display').textContent = '-18°C';
+            
+            // 重置材料选择
+            const boxOptions = document.querySelectorAll('[data-type="box"]');
+            const coolOptions = document.querySelectorAll('[data-type="cool"]');
+            
+            boxOptions.forEach(opt => opt.classList.remove('selected'));
+            coolOptions.forEach(opt => opt.classList.remove('selected'));
+            
+            document.querySelector('[data-type="pro"][data-type="box"]').classList.add('selected');
+            document.querySelector('[data-type="dryice"][data-type="cool"]').classList.add('selected');
+            
+            currentBox = 'pro';
+            currentCool = 'dryice';
+            
+            // 重置图表
+            tempChart.data.labels = [];
+            tempChart.data.datasets[0].data = [];
+            tempChart.update();
+            
+            // 重置配送员位置
+            const deliveryMan = document.querySelector('.delivery-man');
+            deliveryMan.classList.remove('riding');
+            
+            // 重置冰淇淋状态
+            updateIceCreamStatus(-18);
+            document.getElementById('status-text').textContent = '状态良好';
+            document.getElementById('status-text').style.color = '';
+            
+            // 清空结果
+            results = [];
+            updateResultsTable();
+        }
+    </script>
+</body>
+</html>
